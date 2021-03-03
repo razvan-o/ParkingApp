@@ -27,8 +27,8 @@ namespace PayParkingLibrary.EventHandling.Events
 			{
 				return $"{Message}{Environment.NewLine}" +
 					$"\t{RegistrationNumber} left parking.{Environment.NewLine}" +
-					$"\tEntry time: {CarEntryDate} h {Environment.NewLine}" +
-					$"\tDuration: {Math.Round(Duration.GetValueOrDefault(), 2)} h {Environment.NewLine}" +
+					$"\tEntry time: {CarEntryDate}{Environment.NewLine}" +
+					$"\tDuration: {Math.Round(Duration.GetValueOrDefault(), 2)} h{Environment.NewLine}" +
 					$"\tFee: {Fee} LEU";
 			}
 			else

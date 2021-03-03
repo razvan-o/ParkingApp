@@ -1,6 +1,5 @@
 ﻿using PayParkingLibrary;
 using System;
-using System.Linq;
 
 namespace PayParking
 {

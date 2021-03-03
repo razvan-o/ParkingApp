@@ -25,7 +25,7 @@ namespace PayParkingLibrary.Validators
 
 			RuleFor(x => x.Substring(1).Trim().ToUpper())
 				.Matches(carRegistrationNumberRegex)
-				.WithMessage("Car registration number must respect {Area}{Number}{Code} format. e.g.: B101COD");
+				.WithMessage("Car registration number must respect {Area}{Number}{Code} format. e.g.: B101COD"); // I am not checking for valid romanian area code
 		}
 
 		private bool IsOperationSymbol(char arg)

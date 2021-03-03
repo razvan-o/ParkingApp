@@ -1,16 +1,13 @@
-﻿using System;
-
-namespace PayParkingLibrary.Services
+﻿namespace PayParkingLibrary.Services
 {
-	public static class PaymentService
+	public class PaymentService
 	{
-		public static bool HandlePayment(int fee)
+		public virtual bool HandlePayment(int fee)
 		{
 			// Capture user card details
 			// Attempt payment - with retry policies
 
-			// will assume payment goes through.
-			return new Random().Next(0,99) % 2 == 0;
+			return fee % 2 == 0;
 		}
 	}
 }

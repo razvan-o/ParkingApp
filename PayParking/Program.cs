@@ -1,5 +1,6 @@
 ﻿using PayParkingLibrary;
 using PayParkingLibrary.EventHandling.Handlers;
+using PayParkingLibrary.Services;
 using PayParkingLibrary.Validators;
 using System;
 
@@ -14,7 +15,7 @@ namespace PayParking
 			var parkingInputValidator = new ParkingInputValidator();
 			var parkingEventHandler = new ParkingEventHandler();
 			parkingEventHandler.RegisterEventHandler(new EnterParkingEventHandler());
-			parkingEventHandler.RegisterEventHandler(new LeaveParkingEventHandler());
+			parkingEventHandler.RegisterEventHandler(new LeaveParkingEventHandler(new FeeCalculatorService(), new PaymentService()));
 
 			var carPark = new CarPark(capacity, consoleLogger, parkingInputValidator, parkingEventHandler);
 			var carParkGUI = new CarParkGUIDecorator(carPark, consoleLogger);

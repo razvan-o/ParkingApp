@@ -9,11 +9,16 @@ namespace PayParkingLibrary.EventHandling.Handlers
 	public class LeaveParkingEventHandler : IParkingEventHandler
 	{
 		private const char OperationCode = '-';
-		private const int firstHourFee = 10;
-		private const int subsequentHourFee = 5;
+		private readonly FeeCalculatorService feeCalculatorService;
+		private readonly PaymentService paymentService;
 
-		public char GetOperation()
-			=> OperationCode;
+		public LeaveParkingEventHandler(FeeCalculatorService feeCalculatorService, PaymentService paymentService)
+		{
+			this.feeCalculatorService = feeCalculatorService;
+			this.paymentService = paymentService;
+		}
+
+		public char GetOperation() => OperationCode;
 
 		public ParkingEventResult Handle(ParkingEvent parkingEvent)
 		{
@@ -25,12 +30,13 @@ namespace PayParkingLibrary.EventHandling.Handlers
 				return new ParkingEventLeaveResult(validationSuccessful, validationErrors, default, timestamp);
 			}
 
-			(var fee, var duration) = CalculateFee(parkingEvent.ParkedCars[parkingEvent.RegistrationNumber]);
-			var paymentSucces = PaymentService.HandlePayment(fee);
+			(var fee, var duration) = feeCalculatorService.CalculateFee(parkingEvent.ParkedCars[parkingEvent.RegistrationNumber], timestamp);
+			var paymentSucces = paymentService.HandlePayment(fee);
 
 			if (paymentSucces)
 			{
 				// lift barrier
+
 				var result = new ParkingEventLeaveResult(
 					success: true, 
 					message: "Have a good day!",
@@ -45,15 +51,6 @@ namespace PayParkingLibrary.EventHandling.Handlers
 			}
 
 			return new ParkingEventLeaveResult(false, $"Payment error, could not charge {fee} LEU fee", parkingEvent.RegistrationNumber, timestamp);
-		}
-
-		private (int, double) CalculateFee(DateTime entryTime)
-		{
-			var modifiedTimeSpent = (DateTime.UtcNow - entryTime).Multiply(1200); // each second will count as 20 min.
-
-			return modifiedTimeSpent.TotalSeconds % 3600 == 0
-				? (firstHourFee + ((int)modifiedTimeSpent.TotalHours - 1) * subsequentHourFee, modifiedTimeSpent.TotalHours)
-				: (firstHourFee + ((int)modifiedTimeSpent.TotalHours) * subsequentHourFee, modifiedTimeSpent.TotalHours);
 		}
 
 		public (bool, string) CheckForValidOperation(string registrationNumber, Dictionary<string, DateTime> parkedCars, int? capacity)

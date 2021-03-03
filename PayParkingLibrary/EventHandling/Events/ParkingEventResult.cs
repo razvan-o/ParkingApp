@@ -2,6 +2,8 @@
 
 namespace PayParkingLibrary.EventHandling.Events
 {
+	// TODO: Create a base class ParkingEventResultBase, and a ParkingEventEnterResult htat inherits from it. 
+	//       ParkingEventleaveResult will alsno inherit from ParkingEventResultBase
 	public class ParkingEventResult
 	{
 		public bool Success { get; }
