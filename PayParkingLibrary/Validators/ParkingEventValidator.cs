@@ -19,13 +19,15 @@ namespace PayParkingLibrary.Validators
 				.NotEmpty()
 				.WithMessage("Input can not be empty");
 
-			RuleFor(x => x.Trim()[0])
-				.Must(IsOperationSymbol)
-				.WithMessage("The first character in your input must be an operation symbol.");
+			When(x => x != null && !x.Equals(string.Empty), () =>
+				RuleFor(x => x.Trim()[0])
+					.Must(IsOperationSymbol)
+					.WithMessage("The first character in your input must be an operation symbol."));
 
-			RuleFor(x => x.Substring(1).Trim().ToUpper())
-				.Matches(carRegistrationNumberRegex)
-				.WithMessage("Car registration number must respect {Area}{Number}{Code} format. e.g.: B101COD"); // I am not checking for valid romanian area code
+			When(x => x != null && !x.Equals(string.Empty), () =>
+				RuleFor(x => x.Substring(1).Trim().ToUpper())
+					.Matches(carRegistrationNumberRegex)
+					.WithMessage("Car registration number must respect {Area}{Number}{Code} format. e.g.: B101COD")); // I am not checking for valid romanian area code
 		}
 
 		private bool IsOperationSymbol(char arg)

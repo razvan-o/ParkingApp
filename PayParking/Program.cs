@@ -12,7 +12,9 @@ namespace PayParking
 		{
 			var capacity = 3;
 			var consoleLogger = new ConsoleLogger();
+
 			var parkingInputValidator = new ParkingInputValidator();
+
 			var parkingEventHandler = new ParkingEventHandler();
 			parkingEventHandler.RegisterEventHandler(new EnterParkingEventHandler());
 			parkingEventHandler.RegisterEventHandler(new LeaveParkingEventHandler(new FeeCalculatorService(), new PaymentService()));

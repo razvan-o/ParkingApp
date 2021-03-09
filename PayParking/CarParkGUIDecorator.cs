@@ -25,7 +25,7 @@ namespace PayParking
 				var carList = String.Join(",", carPark.ParkedCars.Keys);
 				consoleLogger.WriteLine($"Parked cars: {(carList == string.Empty ? "-" : carList)}.");
 			}
-			else if(input != String.Empty) // my fluent validator won't handle this case for some reason
+			else
 			{
 				carPark.HandleInput(input);
 			}
